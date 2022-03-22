@@ -1,0 +1,55 @@
+--za warudo by JayRain
+
+local Player = game:GetService("Players").LocalPlayer
+local TweenService = game:GetService("TweenService")
+
+local function Chat(String)
+    if game.PlaceId == 286090429 then
+        game:GetService("ReplicatedStorage").Events.PlayerChatted:FireServer(String, false, false, true)
+    else
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(String, "All")
+    end 
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(Key)
+    if Key.KeyCode == Enum.KeyCode.T then
+        if _G.TimeStopped or game:GetService("UserInputService"):GetFocusedTextBox() then
+            return
+        end
+        _G.TimeStopped = true
+        if workspace:FindFirstChild("ZaWarudo") then
+            workspace.ZaWarudo:Play()
+        else
+            local ZaWarudo = Instance.new("Sound", workspace)
+            local ColorCorrection = Instance.new("ColorCorrectionEffect", game:GetService("Lighting"))
+            ZaWarudo.SoundId = "rbxassetid://274698941"
+            ZaWarudo.Volume = 10
+            ZaWarudo.Name = "ZaWarudo"
+            ZaWarudo:Play()
+        end
+            if _G.ChatZaWarudo then Chat("ZA WARUDO") end
+            wait(2)
+            TweenService:Create(workspace.CurrentCamera, TweenInfo.new(0.5), {FieldOfView = 85}):Play()
+            TweenService:Create(game:GetService("Lighting").ColorCorrection, TweenInfo.new(0.8), {Saturation = -1}):Play()
+            local blur = Instance.new("BlurEffect", game:GetService("Lighting"))
+            TweenService:Create(blur, TweenInfo.new(0.8), {Size = 10}):Play()
+            wait(1)
+            TweenService:Create(workspace.CurrentCamera, TweenInfo.new(0.5), {FieldOfView = 70}):Play()
+            game:GetService("Lighting").ColorCorrection.TintColor = Color3.fromRGB(250,250,250)
+            TweenService:Create(blur, TweenInfo.new(0.8), {Size = 0}):Play()
+            settings().Network.IncomingReplicationLag = math.huge
+            wait(_G.AmountOfTime)
+            if workspace:FindFirstChild("TimeResume") then
+                workspace.TimeResume:Play()
+            else
+                local TimeResume = Instance.new("Sound", workspace)
+                TimeResume.Name = "TimeResume"
+                TimeResume.Volume = 10
+                TimeResume.SoundId = "rbxassetid://5626752413"
+                TimeResume:Play()
+            end
+            _G.TimeStopped = false
+            settings().Network.IncomingReplicationLag = 0
+            TweenService:Create(game:GetService("Lighting").ColorCorrection, TweenInfo.new(0.8), {Saturation = 0}):Play()
+    end
+end)
